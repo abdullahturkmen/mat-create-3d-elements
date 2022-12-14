@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+.container {
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    perspective-origin: top right;
+
+    .floor {
+        width: 698px;
+        height: 698px;
+        position: relative;
+        transform-style: preserve-3d;
+        transform: rotate3d(360, 0, 0, 90deg);
+        margin-top: 200px;
+
+        &-texture {
+            &:before,
+            &:after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100%;
+            }
+            &:before {
+                background-image: radial-gradient(#0000, #000),
+                    repeating-linear-gradient(transparent, transparent 38px, #1ac6cc 38px, #1ac6cc 40px);
+            }
+            &:after {
+                transform: rotate(90deg);
+                background-image: radial-gradient(#0000, #000), radial-gradient(#0000, #000),
+                    repeating-linear-gradient(transparent, transparent 38px, #1ac6cc 38px, #1ac6cc 40px);
+            }
+        }
+
+        .cube {
+            position: absolute;
+            transform-style: preserve-3d;
+
+            & > .side {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                box-shadow: inset 0 0 20px #858585;
+            }
+        }
+    }
+}
+
+.form {
+    position: absolute;
+    width: 300px;
+    right: 10px;
+    top: 10px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 5px;
+    & > *{
+        display: flex;
+        & > *{
+            flex: 1 0;
+        }
+    }
+
+    .save-btn{
+        justify-content: center;
+        background-color: #065e40;
+        padding: 5px;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+    }
+}

@@ -49,7 +49,7 @@ const Element = props => {
         setElementSideDetailState(elementSideDetail)
 
 
-        elementAllDetail = { ...elementAllDetail, 'width': `${elementAllDetail.xWidth}px`, 'height': `${elementAllDetail.zWidth}px`, 'transform': `translateZ(${(elementAllDetail.yWidth / 2) + elementAllDetail.bottomSpace}px) rotateZ(${elementAllDetail.rotateZ}deg)  rotateY(${elementAllDetail.rotateX}deg)  rotateX(${elementAllDetail.rotateY}deg)` }
+        elementAllDetail = { ...elementAllDetail, 'width': `${elementAllDetail.xWidth}px`, 'height': `${elementAllDetail.zWidth}px`, 'transform': `translateZ(${(elementAllDetail.yWidth / 2) + elementAllDetail.bottomSpace}px) rotateZ(${elementAllDetail.rotateY}deg)  rotateY(${elementAllDetail.rotateZ}deg)  rotateX(${elementAllDetail.rotateX}deg)` }
         setElementCubeDetailState(elementAllDetail)
 
     }, [props]);

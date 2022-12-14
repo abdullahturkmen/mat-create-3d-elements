@@ -159,7 +159,7 @@ const App = () => {
                 <h3>Positions</h3>
                 <div className="dot-detail-form-element">
                     <label className="form-label">Left Size</label>
-                    <input type="range" min="-500" max="500"
+                    <input type="range" min="-700" max="700"
                         ref={leftSizeRef}
                         className="form-control"
                         value={leftSize}
@@ -169,7 +169,7 @@ const App = () => {
                 </div>
                 <div className="dot-detail-form-element">
                     <label className="form-label">Top Size</label>
-                    <input type="range" min="-500" max="500"
+                    <input type="range" min="-700" max="700"
                         ref={topSizeRef}
                         className="form-control"
                         value={topSize}
@@ -179,7 +179,7 @@ const App = () => {
                 </div>
                 <div className="dot-detail-form-element">
                     <label className="form-label">Bottom Space Size</label>
-                    <input type="range" min="-500" max="500"
+                    <input type="range" min="-700" max="700"
                         ref={bottomSizeRef}
                         className="form-control"
                         value={bottomSize}

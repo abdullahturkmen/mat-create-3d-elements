@@ -17,21 +17,90 @@ body {
     font-family: sans-serif;
 }
 
+.camera-positions {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    display: flex;
+    gap: 5px;
+
+    button{
+        background: #0075ff;
+        color: #fff;
+        border: 0;
+        border-radius: 4px;
+        padding: 4px 10px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #005cc8;
+        }
+    }
+}
+
 .container {
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1000px;
-    perspective-origin: top right;
+    transition: all 1s linear;
+
+    &.three-d {
+        perspective: 1000px;
+
+        & > .floor {
+            margin-top: 200px;
+            transform: rotateX(90deg) rotateZ(0deg) rotateY(0deg);
+        }
+    }
+
+    &.top {
+        perspective: 999999999999px;
+        & > .floor {
+            transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg) rotate(0deg);
+        }
+    }
+
+    &.right {
+        & > .floor {
+            transform: rotateX(90deg) rotateZ(180deg) rotateY(0deg) rotate(-90deg);
+        }
+    }
+
+    &.bottom {
+        & > .floor {
+            transform: rotateX(90deg) rotateZ(90deg) rotateY(0deg) rotate(-90deg);
+        }
+    }
+
+    &.left {
+        & > .floor {
+            transform: rotateX(90deg) rotateZ(0deg) rotateY(0deg) rotate(-90deg);
+        }
+    }
+
+    &.cam {
+        &-one {
+            perspective-origin: top left;
+        }
+
+        &-two {
+            perspective-origin: top;
+        }
+
+        &-three {
+            perspective-origin: top right;
+        }
+    }
 
     .floor {
         width: 698px;
         height: 698px;
         position: relative;
+        box-shadow: 0 0 40px 40px black;
         transform-style: preserve-3d;
-        transform: rotate3d(360, 0, 0, 90deg);
-        margin-top: 200px;
+        transition: all 1s linear;
 
         &-texture {
             &:before,
@@ -56,6 +125,7 @@ body {
         .cube {
             position: absolute;
             transform-style: preserve-3d;
+            z-index: 1;
 
             & > .side {
                 position: absolute;
@@ -78,14 +148,15 @@ body {
     padding: 10px;
     border-radius: 10px;
     gap: 5px;
-    & > *{
+    & > * {
         display: flex;
-        & > *{
+        align-items: center;
+        & > * {
             flex: 1 0;
         }
     }
 
-    .save-btn{
+    .save-btn {
         justify-content: center;
         background-color: #065e40;
         padding: 5px;

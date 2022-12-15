@@ -15,6 +15,7 @@ const App = () => {
     const [rotateXAxisSize, setRotateXAxisSize] = useState(0);
     const [rotateYAxisSize, setRotateYAxisSize] = useState(0);
     const [rotateZAxisSize, setRotateZAxisSize] = useState(0);
+    const [cameraPosition, setCameraPosition] = useState('cam-three three-d');
 
 
     const xAxisSizeRef = useRef(null);
@@ -65,22 +66,22 @@ const App = () => {
             setNewElement({
                 sides: {
                     top: {
-                        background: 'beige'
+                        background: 'white'
                     },
                     left: {
-                        background: 'pink'
+                        background: 'white'
                     },
                     right: {
-                        background: 'lightblue'
+                        background: 'white'
                     },
                     front: {
-                        background: 'gold'
+                        background: 'white'
                     },
                     back: {
-                        background: 'brown'
+                        background: 'white'
                     },
                     bottom: {
-                        background: 'darkcyan'
+                        background: 'white'
                     }
                 },
                 xWidth: parseInt(xAxisSizeRef.current.value),
@@ -101,10 +102,40 @@ const App = () => {
 
     }
 
+    const camera = (position) => {
+        setCameraPosition(position)
+    }
+
     return (
         <div className="App">
 
-            <div className="container">
+            <div className='camera-positions'>
+                <button onClick={
+                    () => camera('top')
+                }>Top</button>
+                <button onClick={
+                    () => camera('right')
+                }>Right</button>
+                <button onClick={
+                    () => camera('bottom')
+                }>Bottom</button>
+                <button onClick={
+                    () => camera('left')
+                }>Left</button>
+                <button onClick={
+                    () => camera('cam-one three-d')
+                }>Camera 1</button>
+                <button onClick={
+                    () => camera('cam-two three-d')
+                }>Camera 2</button>
+                <button onClick={
+                    () => camera('cam-three three-d')
+                }>Camera 3</button>
+            </div>
+
+            <div className={
+                `container ${cameraPosition}`
+            }>
                 <div className="floor floor-texture">
 
                     {

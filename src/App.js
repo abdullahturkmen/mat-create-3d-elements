@@ -1,6 +1,7 @@
 import {useRef, useEffect, useState} from 'react';
 import {elementsStyles} from 'data';
 import Element from 'components/Element';
+import Author from 'components/Author';
 
 const App = () => {
 
@@ -108,6 +109,8 @@ const App = () => {
 
     return (
         <div className="App">
+
+          <Author/>
 
             <div className='camera-positions'>
                 <button onClick={

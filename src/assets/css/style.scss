@@ -27,7 +27,7 @@ body {
     display: flex;
     gap: 5px;
 
-    button{
+    button {
         background: #0075ff;
         color: #fff;
         border: 0;
@@ -35,7 +35,7 @@ body {
         padding: 4px 10px;
         cursor: pointer;
 
-        &:hover{
+        &:hover {
             background-color: #005cc8;
         }
     }
@@ -46,7 +46,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 1s linear;
+    transition: all 0.6s linear;
 
     &.three-d {
         perspective: 1000px;
@@ -58,7 +58,7 @@ body {
     }
 
     &.top {
-        perspective: 999999999999px;
+        perspective: 100000px;
         & > .floor {
             transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg) rotate(0deg);
         }
@@ -71,6 +71,8 @@ body {
     }
 
     &.bottom {
+        perspective-origin: center;
+        perspective: 100000px;
         & > .floor {
             transform: rotateX(90deg) rotateZ(90deg) rotateY(0deg) rotate(-90deg);
         }
@@ -102,7 +104,7 @@ body {
         position: relative;
         box-shadow: 0 0 40px 40px black;
         transform-style: preserve-3d;
-        transition: all 1s linear;
+        transition: all 0.6s linear;
 
         &-texture {
             &:before,
@@ -155,6 +157,50 @@ body {
         align-items: center;
         & > * {
             flex: 1 0;
+        }
+
+        .color-side-list {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            &-row {
+                display: flex;
+            }
+            &-col {
+                width: 23%;
+                margin: 1%;
+                aspect-ratio: 1;
+                background-color: #fff;
+                border: 1px solid black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10px;
+                cursor: pointer;
+                transition: all .2s linear;
+
+                &:hover{
+                    box-shadow: 0 0 5px #2a2a2a;
+                }
+
+                span {
+                    mix-blend-mode: difference;
+                    color: #fff;
+                    transform: rotate(-45deg);
+                }
+            }
+
+            .color-modal {
+                position: absolute;
+                right: 300px;
+                top: 50%;
+                transform: translate(0px, -50%);
+                display: none;
+                &.open{
+                    display: block;
+                }
+            }
         }
     }
 

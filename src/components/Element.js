@@ -9,7 +9,7 @@ const Element = props => {
 
     useEffect(() => {
 
-        //console.log("props : ", props.details)
+        console.log("props : ", props.details)
 
         //get all side details with props
         elementAllDetail = props.details
@@ -50,11 +50,14 @@ const Element = props => {
 
 
         elementAllDetail = { ...elementAllDetail, 'width': `${elementAllDetail.xWidth}px`, 'height': `${elementAllDetail.zWidth}px`, 'transform': `translateZ(${(elementAllDetail.yWidth / 2) + elementAllDetail.bottomSpace}px) rotateZ(${elementAllDetail.rotateY}deg)  rotateY(${elementAllDetail.rotateZ}deg)  rotateX(${elementAllDetail.rotateX}deg)` }
+        //console.log("elementAllDetail",elementAllDetail)
         setElementCubeDetailState(elementAllDetail)
+        
 
     }, [props]);
 
     return (
+       //console.log("elementCubeDetailState zzzz", elementCubeDetailState)
         <div className="cube" style={elementCubeDetailState} >
             {
                 Object.entries(props.details.sides).map((x, xIndex) => (

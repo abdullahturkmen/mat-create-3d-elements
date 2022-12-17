@@ -2,8 +2,13 @@ import {useRef, useEffect, useState} from 'react';
 import {elementsStyles} from 'data';
 import Element from 'components/Element';
 import Author from 'components/Author';
+import {HexColorPicker} from "react-colorful";
 
 const App = () => {
+
+    const colorPickerRef = useRef(null);
+    const [colorPickerVisible, setColorPickerVisible] = useState(false);
+    const [colorPickerSelectedSide, setColorPickerSelectedSide] = useState('');
 
     const [elements, setElements] = useState(elementsStyles);
 
@@ -18,7 +23,6 @@ const App = () => {
     const [rotateZAxisSize, setRotateZAxisSize] = useState(0);
     const [cameraPosition, setCameraPosition] = useState('cam-three three-d');
 
-
     const xAxisSizeRef = useRef(null);
     const yAxisSizeRef = useRef(null);
     const zAxisSizeRef = useRef(null);
@@ -30,6 +34,37 @@ const App = () => {
     const rotateZAxisSizeRef = useRef(null);
 
     const [newElement, setNewElement] = useState([]);
+
+    const [color, setColor] = useState("");
+
+    const sidesColorsInitial = {
+        top: {
+            background: '#fff'
+        },
+        left: {
+            background: '#fff'
+        },
+        right: {
+            background: '#fff'
+        },
+        front: {
+            background: '#fff'
+        },
+        back: {
+            background: '#fff'
+        },
+        bottom: {
+            background: '#fff'
+        }
+    }
+
+    const [sidesColors, setSidesColors] = useState(sidesColorsInitial)
+
+
+    useEffect(() => {
+        console.log("renk : ", color)
+        addParam()
+    }, [color]);
 
     const addElement = e => {
         e.preventDefault();
@@ -47,6 +82,7 @@ const App = () => {
         setRotateXAxisSize(0)
         setRotateYAxisSize(0)
         setRotateZAxisSize(0)
+        setSidesColors(sidesColorsInitial)
     }
 
 
@@ -65,26 +101,7 @@ const App = () => {
         if (xAxisSizeRef.current.value > 0 && yAxisSizeRef.current.value > 0 && zAxisSizeRef.current.value > 0) {
 
             setNewElement({
-                sides: {
-                    top: {
-                        background: 'white'
-                    },
-                    left: {
-                        background: 'white'
-                    },
-                    right: {
-                        background: 'white'
-                    },
-                    front: {
-                        background: 'white'
-                    },
-                    back: {
-                        background: 'white'
-                    },
-                    bottom: {
-                        background: 'white'
-                    }
-                },
+                sides: sidesColors,
                 xWidth: parseInt(xAxisSizeRef.current.value),
                 yWidth: parseInt(yAxisSizeRef.current.value),
                 zWidth: parseInt(zAxisSizeRef.current.value),
@@ -107,10 +124,36 @@ const App = () => {
         setCameraPosition(position)
     }
 
+    const openColorPicker = (side) => {
+        setColorPickerSelectedSide(side)
+        setColorPickerVisible(true)
+    }
+
+    const changeSideColor = (e) => {
+        let newArr = sidesColors;
+        newArr[colorPickerSelectedSide] = {
+            'background': e
+        };
+        setSidesColors(newArr);
+        setColor(e)
+    }
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (colorPickerRef.current && ! colorPickerRef.current.contains(event.target)) {
+                setColorPickerVisible(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return() => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [colorPickerRef]);
+
     return (
         <div className="App">
 
-          <Author/>
+            <Author/>
 
             <div className='camera-positions'>
                 <button onClick={
@@ -156,9 +199,9 @@ const App = () => {
                 } </div>
             </div>
 
-
             <form onSubmit={addElement}
                 className='form'>
+
                 <h3>Sizes</h3>
                 <div className="dot-detail-form-element">
                     <label className="form-label">X Axis Size</label>
@@ -251,6 +294,94 @@ const App = () => {
                         onInput={addParam}
                         onChange={addParam}/>
                     <span>{rotateZAxisSize}deg</span>
+                </div>
+                <h3>Colors</h3>
+                <div className="dot-detail-form-element">
+                    <div className='color-side-list'>
+                        <div className='color-side-list-row'>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['right']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('right')
+                            }>
+                                <span>Right</span>
+                            </div>
+                        </div>
+                        <div className='color-side-list-row'>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['top']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('top')
+                            }>
+                                <span>Top</span>
+                            </div>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['front']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('front')
+                            }>
+                                <span>Front</span>
+                            </div>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['bottom']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('bottom')
+                            }>
+                                <span>Bottom</span>
+                            </div>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['back']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('back')
+                            }>
+                                <span>Back</span>
+                            </div>
+                        </div>
+                        <div className='color-side-list-row'>
+                            <div className='color-side-list-col'
+                                style={
+                                    {
+                                        'background': sidesColors['left']['background']
+                                    }
+                                }
+                                onClick={
+                                    () => openColorPicker('left')
+                            }>
+                                <span>Left</span>
+                            </div>
+                        </div>
+                        <div className={
+                                `color-modal ${
+                                    colorPickerVisible && 'open'
+                                }`
+                            }
+                            ref={colorPickerRef}>
+                            <HexColorPicker color={color}
+                                onChange={
+                                    (e) => changeSideColor(e)
+                                }/>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" className="save-btn">Add Block</button>

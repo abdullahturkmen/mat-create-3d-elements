@@ -105,12 +105,12 @@ const App = () => {
                 xWidth: parseInt(xAxisSizeRef.current.value),
                 yWidth: parseInt(yAxisSizeRef.current.value),
                 zWidth: parseInt(zAxisSizeRef.current.value),
-                top: `${
+                top: `calc(50% - ${
                     parseInt(topSizeRef.current.value)
-                }px`,
-                left: `${
+                }px)`,
+                left: `calc(50% - ${
                     parseInt(leftSizeRef.current.value)
-                }px`,
+                }px)`,
                 bottomSpace: parseInt(bottomSizeRef.current.value),
                 rotateX: parseInt(rotateXAxisSizeRef.current.value),
                 rotateY: parseInt(rotateYAxisSizeRef.current.value),
@@ -125,17 +125,44 @@ const App = () => {
     }
 
     const openColorPicker = (side) => {
+        setColor(sidesColors[side]['background'])
         setColorPickerSelectedSide(side)
         setColorPickerVisible(true)
     }
 
-    const changeSideColor = (e) => {
+    const changeSideColor = (bgColor) => {
         let newArr = sidesColors;
+        let sideStyles = {}
+        if(colorPickerSelectedSide == 'back'){
+            sideStyles = {'background': bgColor,'transform': `rotateX(90deg) translateZ(${(yAxisSize) / 2}px)`, 'width': xAxisSize,
+            'height': yAxisSize}
+        }
+        else if(colorPickerSelectedSide == 'top'){
+            sideStyles = {'background': bgColor,'transform': `translateZ(${(yAxisSize) / 2}px)`, 'height': zAxisSize}
+        }
+        else if(colorPickerSelectedSide == 'bottom'){
+            sideStyles = {'background': bgColor,'transform': `translateZ(${-(yAxisSize) / 2}px)`,
+            'height': zAxisSize}
+        }
+        else if(colorPickerSelectedSide == 'right'){
+            sideStyles = {'background': bgColor,'transform': `rotateY(90deg) translateZ(${xAxisSize + (-yAxisSize / 2)}px)`, 'width': yAxisSize,
+            'height': zAxisSize}
+        }
+        else if(colorPickerSelectedSide == 'left'){
+            sideStyles = {'background': bgColor,'transform': `rotateY(-90deg) translateZ(${(yAxisSize) / 2}px)`, 'width': yAxisSize,
+            'height': zAxisSize}
+        }
+        else if(colorPickerSelectedSide == 'front'){
+            sideStyles = {'background': bgColor,'transform': `rotateX(-90deg) translateZ(${zAxisSize + (-(yAxisSize) / 2)}px)`, 'width': xAxisSize,
+            'height': yAxisSize}
+        }
+
+
         newArr[colorPickerSelectedSide] = {
-            'background': e
+            ...sideStyles
         };
         setSidesColors(newArr);
-        setColor(e)
+        setColor(bgColor)
     }
 
     useEffect(() => {
@@ -149,6 +176,13 @@ const App = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [colorPickerRef]);
+
+    const disabledForm = () => {
+        if (xAxisSize <= 0 || yAxisSize <= 0 || zAxisSize <= 0) {
+            return true
+        }
+        return false
+    }
 
     return (
         <div className="App">
@@ -193,7 +227,8 @@ const App = () => {
                     elements ?. length > 0 && elements.map((e, index) => (
 
                         <Element details={e}
-                            key={index}/>
+                            key={index}
+                            id={index}/>
 
                     ))
                 } </div>
@@ -202,9 +237,9 @@ const App = () => {
             <form onSubmit={addElement}
                 className='form'>
 
-                <h3>Sizes</h3>
+                <h4>Sizes</h4>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">X Axis Size</label>
+                    <label className="form-label">X Axis Width</label>
                     <input type="range" min="0" max="500"
                         ref={xAxisSizeRef}
                         className="form-control"
@@ -214,7 +249,7 @@ const App = () => {
                     <span>{xAxisSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Y Axis Size</label>
+                    <label className="form-label">Y Axis Width</label>
                     <input type="range" min="0" max="500"
                         ref={yAxisSizeRef}
                         className="form-control"
@@ -224,7 +259,7 @@ const App = () => {
                     <span>{yAxisSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Z Axis Size</label>
+                    <label className="form-label">Z Axis Width</label>
                     <input type="range" min="0" max="500"
                         ref={zAxisSizeRef}
                         className="form-control"
@@ -233,7 +268,7 @@ const App = () => {
                         onChange={addParam}/>
                     <span>{zAxisSize}px</span>
                 </div>
-                <h3>Positions</h3>
+                <h4>Positions</h4>
                 <div className="dot-detail-form-element">
                     <label className="form-label">Left Size</label>
                     <input type="range" min="-700" max="700"
@@ -241,7 +276,10 @@ const App = () => {
                         className="form-control"
                         value={leftSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{leftSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -251,53 +289,75 @@ const App = () => {
                         className="form-control"
                         value={topSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{topSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Bottom Space Size</label>
+                    <label className="form-label">Bottom Space
+                    </label>
                     <input type="range" min="-700" max="700"
                         ref={bottomSizeRef}
                         className="form-control"
                         value={bottomSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{bottomSize}px</span>
                 </div>
-                <h3>Transforms</h3>
+                <h4>Transforms</h4>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Rotate X Axis Size</label>
+                    <label className="form-label">Rotate X Axis</label>
                     <input type="range" min="-180" max="180"
                         ref={rotateXAxisSizeRef}
                         className="form-control"
                         value={rotateXAxisSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{rotateXAxisSize}deg</span>
                 </div>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Rotate Y Axis Size</label>
+                    <label className="form-label">Rotate Y Axis
+                    </label>
                     <input type="range" min="-180" max="180"
                         ref={rotateYAxisSizeRef}
                         className="form-control"
                         value={rotateYAxisSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{rotateYAxisSize}deg</span>
                 </div>
                 <div className="dot-detail-form-element">
-                    <label className="form-label">Rotate Z Axis Size</label>
+                    <label className="form-label">Rotate Z Axis
+                    </label>
                     <input type="range" min="-180" max="180"
                         ref={rotateZAxisSizeRef}
                         className="form-control"
                         value={rotateZAxisSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam}
+                        disabled={
+                            disabledForm()
+                        }/>
                     <span>{rotateZAxisSize}deg</span>
                 </div>
-                <h3>Colors</h3>
+                <h4>Colors</h4>
                 <div className="dot-detail-form-element">
-                    <div className='color-side-list'>
+                    <div className={
+                        `color-side-list ${
+                            disabledForm() && 'disabled'
+                        }`
+                    }>
                         <div className='color-side-list-row'>
                             <div className='color-side-list-col'
                                 style={
@@ -384,7 +444,10 @@ const App = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="save-btn">Add Block</button>
+                <button type="submit" className="save-btn"
+                    disabled={
+                        disabledForm()
+                }>Add Block</button>
 
             </form>
 

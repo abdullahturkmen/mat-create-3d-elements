@@ -9,7 +9,7 @@ const Element = props => {
 
     useEffect(() => {
 
-        console.log("props : ", props.details)
+        //console.log("props : ", props)
 
         //get all side details with props
         elementAllDetail = props.details
@@ -58,7 +58,7 @@ const Element = props => {
 
     return (
        //console.log("elementCubeDetailState zzzz", elementCubeDetailState)
-        <div className="cube" style={elementCubeDetailState} >
+        <div id={props.id} className="cube" style={elementCubeDetailState} >
             {
                 Object.entries(props.details.sides).map((x, xIndex) => (
                     <div className={`side ${x[0]}`} style={elementSideDetailState[x[0]]} key={xIndex}></div>

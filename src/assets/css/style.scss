@@ -46,7 +46,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.4s linear;
+    transition: all 0.2s ease-in-out;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 
     &.three-d {
         perspective: 1000px;
@@ -104,7 +108,7 @@ body {
         position: relative;
         box-shadow: 0 0 40px 40px black;
         transform-style: preserve-3d;
-        transition: all 0.4s linear;
+        transition: all 0.2s ease-in-out;
 
         &-texture {
             &:before,
@@ -144,7 +148,7 @@ body {
 .form {
     position: absolute;
     width: 300px;
-    right: 10px;
+    right: -300px;
     top: 10px;
     background: #fff;
     display: flex;
@@ -155,6 +159,11 @@ body {
     max-height: calc(100vh - 20px);
     overflow-y: auto;
     z-index: 10;
+    transition: all 0.2s linear;
+
+    &.open {
+        right: 10px;
+    }
     & > * {
         display: flex;
         align-items: center;
@@ -168,10 +177,10 @@ body {
             flex-direction: column;
             position: relative;
 
-            &.disabled{
-                & > *{
+            &.disabled {
+                & > * {
                     pointer-events: none;
-                    opacity: .4;
+                    opacity: 0.4;
                 }
             }
 
@@ -214,7 +223,7 @@ body {
                     display: block;
                     width: 100%;
 
-                    & > *{
+                    & > * {
                         width: auto !important;
                     }
                 }
@@ -232,9 +241,44 @@ body {
         font-size: 18px;
         cursor: pointer;
 
-        &:disabled, &.disabled{
-            opacity: .5;
+        &:disabled,
+        &.disabled {
+            opacity: 0.5;
             cursor: initial !important;
         }
     }
+
+    &-close-btn {
+        background-color: #ff5189;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        justify-content: center;
+        width: 22px;
+        aspect-ratio: 1;
+    }
+
+}
+
+
+.form-open-btn {
+      
+    background-color: #065e40;
+    padding: 5px;
+    border: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 10%;
+    width: 36px;
+    aspect-ratio: 1;
 }

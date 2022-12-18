@@ -37,6 +37,9 @@ const App = () => {
 
     const [color, setColor] = useState("");
 
+    const [formVisible, setFormVisible] = useState(false);
+
+
     const sidesColorsInitial = {
         top: {
             background: '#fff'
@@ -62,7 +65,6 @@ const App = () => {
 
 
     useEffect(() => {
-        console.log("renk : ", color)
         addParam()
     }, [color]);
 
@@ -133,33 +135,62 @@ const App = () => {
     const changeSideColor = (bgColor) => {
         let newArr = sidesColors;
         let sideStyles = {}
-        if(colorPickerSelectedSide == 'back'){
-            sideStyles = {'background': bgColor,'transform': `rotateX(90deg) translateZ(${(yAxisSize) / 2}px)`, 'width': xAxisSize,
-            'height': yAxisSize}
-        }
-        else if(colorPickerSelectedSide == 'top'){
-            sideStyles = {'background': bgColor,'transform': `translateZ(${(yAxisSize) / 2}px)`, 'height': zAxisSize}
-        }
-        else if(colorPickerSelectedSide == 'bottom'){
-            sideStyles = {'background': bgColor,'transform': `translateZ(${-(yAxisSize) / 2}px)`,
-            'height': zAxisSize}
-        }
-        else if(colorPickerSelectedSide == 'right'){
-            sideStyles = {'background': bgColor,'transform': `rotateY(90deg) translateZ(${xAxisSize + (-yAxisSize / 2)}px)`, 'width': yAxisSize,
-            'height': zAxisSize}
-        }
-        else if(colorPickerSelectedSide == 'left'){
-            sideStyles = {'background': bgColor,'transform': `rotateY(-90deg) translateZ(${(yAxisSize) / 2}px)`, 'width': yAxisSize,
-            'height': zAxisSize}
-        }
-        else if(colorPickerSelectedSide == 'front'){
-            sideStyles = {'background': bgColor,'transform': `rotateX(-90deg) translateZ(${zAxisSize + (-(yAxisSize) / 2)}px)`, 'width': xAxisSize,
-            'height': yAxisSize}
+        if (colorPickerSelectedSide == 'back') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `rotateX(90deg) translateZ(${
+                    (yAxisSize) / 2
+                }px)`,
+                'width': xAxisSize,
+                'height': yAxisSize
+            }
+        } else if (colorPickerSelectedSide == 'top') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `translateZ(${
+                    (yAxisSize) / 2
+                }px)`,
+                'height': zAxisSize
+            }
+        } else if (colorPickerSelectedSide == 'bottom') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `translateZ(${ -(yAxisSize) / 2
+                }px)`,
+                'height': zAxisSize
+            }
+        } else if (colorPickerSelectedSide == 'right') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `rotateY(90deg) translateZ(${
+                    xAxisSize + (-yAxisSize / 2)
+                }px)`,
+                'width': yAxisSize,
+                'height': zAxisSize
+            }
+        } else if (colorPickerSelectedSide == 'left') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `rotateY(-90deg) translateZ(${
+                    (yAxisSize) / 2
+                }px)`,
+                'width': yAxisSize,
+                'height': zAxisSize
+            }
+        } else if (colorPickerSelectedSide == 'front') {
+            sideStyles = {
+                'background': bgColor,
+                'transform': `rotateX(-90deg) translateZ(${
+                    zAxisSize + (-(yAxisSize) / 2)
+                }px)`,
+                'width': xAxisSize,
+                'height': yAxisSize
+            }
         }
 
 
         newArr[colorPickerSelectedSide] = {
-            ...sideStyles
+            ... sideStyles
         };
         setSidesColors(newArr);
         setColor(bgColor)
@@ -234,9 +265,26 @@ const App = () => {
                 } </div>
             </div>
 
-            <form onSubmit={addElement}
-                className='form'>
+            {
+            !formVisible && (
+                <button className='form-open-btn'
+                    onClick={
+                        () => setFormVisible(true)
+                }>&#9881;</button>
+            )
+        }
 
+
+            <form onSubmit={addElement}
+                className={
+                    `form ${
+                        formVisible && 'open'
+                    }`
+            }>
+                <button type='button' className='form-close-btn'
+                    onClick={
+                        () => setFormVisible(false)
+                }>&#10006;</button>
                 <h4>Sizes</h4>
                 <div className="dot-detail-form-element">
                     <label className="form-label">X Axis Width</label>

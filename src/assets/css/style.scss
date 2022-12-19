@@ -23,20 +23,58 @@ body {
     position: fixed;
     top: 10px;
     left: 10px;
-    z-index: 10;
-    display: flex;
-    gap: 5px;
+    z-index: 12;
 
-    button {
+    &:hover {
+        .camera-positions-list {
+            display: flex;
+        }
+    }
+
+    &-list {
+        display: flex;
+        gap: 5px;
+
+        @media screen and (max-width: 767px) {
+            flex-direction: column;
+            z-index: 12;
+            background-color: #fff;
+            padding: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            display: none;
+            position: relative;
+        
+        }
+
+        button {
+            background: #0075ff;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #005cc8;
+            }
+        }
+    }
+
+    &-open {
+        position: absolute;
+     
+        z-index: 10;
+        display: none;
         background: #0075ff;
         color: #fff;
         border: 0;
         border-radius: 4px;
         padding: 4px 10px;
         cursor: pointer;
-
-        &:hover {
-            background-color: #005cc8;
+        @media screen and (max-width: 767px) {
+            display: block;
         }
     }
 }
@@ -146,7 +184,7 @@ body {
 }
 
 .form {
-    position: absolute;
+    position: fixed;
     width: 300px;
     right: -300px;
     top: 10px;
@@ -262,12 +300,9 @@ body {
         width: 22px;
         aspect-ratio: 1;
     }
-
 }
 
-
 .form-open-btn {
-      
     background-color: #065e40;
     padding: 5px;
     border: 0;
@@ -281,4 +316,24 @@ body {
     top: 10%;
     width: 36px;
     aspect-ratio: 1;
+}
+
+.floor-zoom {
+    &-in,
+    &-out {
+        position: fixed;
+        left: 10px;
+        z-index: 11;
+        width: 30px;
+        aspect-ratio: 1;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    &-in {
+        top: 10%;
+    }
+    &-out {
+        top: calc(10% + 40px);
+    }
 }

@@ -1,8 +1,8 @@
-import {useRef, useEffect, useState} from 'react';
-import {elementsStyles} from 'data';
+import { useRef, useEffect, useState } from 'react';
+import { elementsStyles } from 'data';
 import Element from 'components/Element';
 import Author from 'components/Author';
-import {HexColorPicker} from "react-colorful";
+import { HexColorPicker } from "react-colorful";
 
 const App = () => {
 
@@ -38,6 +38,8 @@ const App = () => {
     const [color, setColor] = useState("");
 
     const [formVisible, setFormVisible] = useState(false);
+
+    const [floorZoom, setFloorZoom] = useState(1);
 
 
     const sidesColorsInitial = {
@@ -107,12 +109,10 @@ const App = () => {
                 xWidth: parseInt(xAxisSizeRef.current.value),
                 yWidth: parseInt(yAxisSizeRef.current.value),
                 zWidth: parseInt(zAxisSizeRef.current.value),
-                top: `calc(50% - ${
-                    parseInt(topSizeRef.current.value)
-                }px)`,
-                left: `calc(50% - ${
-                    parseInt(leftSizeRef.current.value)
-                }px)`,
+                top: `calc(50% - ${parseInt(topSizeRef.current.value)
+                    }px)`,
+                left: `calc(50% - ${parseInt(leftSizeRef.current.value)
+                    }px)`,
                 bottomSpace: parseInt(bottomSizeRef.current.value),
                 rotateX: parseInt(rotateXAxisSizeRef.current.value),
                 rotateY: parseInt(rotateYAxisSizeRef.current.value),
@@ -138,51 +138,46 @@ const App = () => {
         if (colorPickerSelectedSide == 'back') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `rotateX(90deg) translateZ(${
-                    (yAxisSize) / 2
-                }px)`,
+                'transform': `rotateX(90deg) translateZ(${(yAxisSize) / 2
+                    }px)`,
                 'width': xAxisSize,
                 'height': yAxisSize
             }
         } else if (colorPickerSelectedSide == 'top') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `translateZ(${
-                    (yAxisSize) / 2
-                }px)`,
+                'transform': `translateZ(${(yAxisSize) / 2
+                    }px)`,
                 'height': zAxisSize
             }
         } else if (colorPickerSelectedSide == 'bottom') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `translateZ(${ -(yAxisSize) / 2
-                }px)`,
+                'transform': `translateZ(${-(yAxisSize) / 2
+                    }px)`,
                 'height': zAxisSize
             }
         } else if (colorPickerSelectedSide == 'right') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `rotateY(90deg) translateZ(${
-                    xAxisSize + (-yAxisSize / 2)
-                }px)`,
+                'transform': `rotateY(90deg) translateZ(${xAxisSize + (-yAxisSize / 2)
+                    }px)`,
                 'width': yAxisSize,
                 'height': zAxisSize
             }
         } else if (colorPickerSelectedSide == 'left') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `rotateY(-90deg) translateZ(${
-                    (yAxisSize) / 2
-                }px)`,
+                'transform': `rotateY(-90deg) translateZ(${(yAxisSize) / 2
+                    }px)`,
                 'width': yAxisSize,
                 'height': zAxisSize
             }
         } else if (colorPickerSelectedSide == 'front') {
             sideStyles = {
                 'background': bgColor,
-                'transform': `rotateX(-90deg) translateZ(${
-                    zAxisSize + (-(yAxisSize) / 2)
-                }px)`,
+                'transform': `rotateX(-90deg) translateZ(${zAxisSize + (-(yAxisSize) / 2)
+                    }px)`,
                 'width': xAxisSize,
                 'height': yAxisSize
             }
@@ -190,7 +185,7 @@ const App = () => {
 
 
         newArr[colorPickerSelectedSide] = {
-            ... sideStyles
+            ...sideStyles
         };
         setSidesColors(newArr);
         setColor(bgColor)
@@ -198,12 +193,12 @@ const App = () => {
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (colorPickerRef.current && ! colorPickerRef.current.contains(event.target)) {
+            if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
                 setColorPickerVisible(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-        return() => {
+        return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [colorPickerRef]);
@@ -215,76 +210,96 @@ const App = () => {
         return false
     }
 
+    const floorZoomIn = () => {
+        setFloorZoom(floorZoom + 1 / 20)
+    }
+
+    const floorZoomOut = () => {
+        setFloorZoom(floorZoom - 1 / 20)
+    }
+
     return (
         <div className="App">
 
-            <Author/>
+            <Author />
+
 
             <div className='camera-positions'>
-                <button onClick={
-                    () => camera('top')
-                }>Top</button>
-                <button onClick={
-                    () => camera('right')
-                }>Right</button>
-                <button onClick={
-                    () => camera('bottom')
-                }>Bottom</button>
-                <button onClick={
-                    () => camera('left')
-                }>Left</button>
-                <button onClick={
-                    () => camera('cam-one three-d')
-                }>Camera 1</button>
-                <button onClick={
-                    () => camera('cam-two three-d')
-                }>Camera 2</button>
-                <button onClick={
-                    () => camera('cam-three three-d')
-                }>Camera 3</button>
+                <div className='camera-positions-open'>Camera</div>
+                <div className='camera-positions-list'>
+                    <button onClick={
+                        () => camera('top')
+                    }>Top</button>
+                    <button onClick={
+                        () => camera('right')
+                    }>Right</button>
+                    <button onClick={
+                        () => camera('bottom')
+                    }>Bottom</button>
+                    <button onClick={
+                        () => camera('left')
+                    }>Left</button>
+                    <button onClick={
+                        () => camera('cam-one three-d')
+                    }>Camera 1</button>
+                    <button onClick={
+                        () => camera('cam-two three-d')
+                    }>Camera 2</button>
+                    <button onClick={
+                        () => camera('cam-three three-d')
+                    }>Camera 3</button>
+                </div>
             </div>
+
+            <button className='floor-zoom-in'
+                onClick={
+                    () => floorZoomIn()
+                }>&#43;</button>
+            <button className='floor-zoom-out'
+                onClick={
+                    () => floorZoomOut()
+                }>&minus;</button>
 
             <div className={
                 `container ${cameraPosition}`
-            }>
+            } style={{ 'transform': `translate(-50%, -50%) scale(${floorZoom})` }}>
                 <div className="floor floor-texture">
 
                     {
-                    Object.keys(newElement).length > 0 && <Element details={newElement}/>
-                }
+                        Object.keys(newElement).length > 0 && <Element details={newElement} />
+                    }
 
 
                     {
-                    elements ?. length > 0 && elements.map((e, index) => (
+                        elements?.length > 0 && elements.map((e, index) => (
 
-                        <Element details={e}
-                            key={index}
-                            id={index}/>
+                            <Element details={e}
+                                key={index}
+                                id={index} />
 
-                    ))
-                } </div>
+                        ))
+                    } </div>
             </div>
 
             {
-            !formVisible && (
-                <button className='form-open-btn'
-                    onClick={
-                        () => setFormVisible(true)
-                }>&#9881;</button>
-            )
-        }
+                !formVisible && (
+                    <button className='form-open-btn'
+                        onClick={
+                            () => setFormVisible(true)
+                        }>&#9881;</button>
+                )
+            }
 
 
             <form onSubmit={addElement}
                 className={
-                    `form ${
-                        formVisible && 'open'
+                    `form ${formVisible && 'open'
                     }`
-            }>
+                }>
                 <button type='button' className='form-close-btn'
                     onClick={
                         () => setFormVisible(false)
-                }>&#10006;</button>
+                    }>&#10006;</button>
                 <h4>Sizes</h4>
                 <div className="dot-detail-form-element">
                     <label className="form-label">X Axis Width</label>
@@ -293,7 +308,7 @@ const App = () => {
                         className="form-control"
                         value={xAxisSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam} />
                     <span>{xAxisSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -303,7 +318,7 @@ const App = () => {
                         className="form-control"
                         onInput={addParam}
                         value={yAxisSize}
-                        onChange={addParam}/>
+                        onChange={addParam} />
                     <span>{yAxisSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -313,7 +328,7 @@ const App = () => {
                         className="form-control"
                         value={zAxisSize}
                         onInput={addParam}
-                        onChange={addParam}/>
+                        onChange={addParam} />
                     <span>{zAxisSize}px</span>
                 </div>
                 <h4>Positions</h4>
@@ -327,7 +342,7 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{leftSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -340,7 +355,7 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{topSize}px</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -354,7 +369,7 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{bottomSize}px</span>
                 </div>
                 <h4>Transforms</h4>
@@ -368,7 +383,7 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{rotateXAxisSize}deg</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -382,7 +397,7 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{rotateYAxisSize}deg</span>
                 </div>
                 <div className="dot-detail-form-element">
@@ -396,14 +411,13 @@ const App = () => {
                         onChange={addParam}
                         disabled={
                             disabledForm()
-                        }/>
+                        } />
                     <span>{rotateZAxisSize}deg</span>
                 </div>
                 <h4>Colors</h4>
                 <div className="dot-detail-form-element">
                     <div className={
-                        `color-side-list ${
-                            disabledForm() && 'disabled'
+                        `color-side-list ${disabledForm() && 'disabled'
                         }`
                     }>
                         <div className='color-side-list-row'>
@@ -415,7 +429,7 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('right')
-                            }>
+                                }>
                                 <span>Right</span>
                             </div>
                         </div>
@@ -428,7 +442,7 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('top')
-                            }>
+                                }>
                                 <span>Top</span>
                             </div>
                             <div className='color-side-list-col'
@@ -439,7 +453,7 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('front')
-                            }>
+                                }>
                                 <span>Front</span>
                             </div>
                             <div className='color-side-list-col'
@@ -450,7 +464,7 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('bottom')
-                            }>
+                                }>
                                 <span>Bottom</span>
                             </div>
                             <div className='color-side-list-col'
@@ -461,7 +475,7 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('back')
-                            }>
+                                }>
                                 <span>Back</span>
                             </div>
                         </div>
@@ -474,20 +488,19 @@ const App = () => {
                                 }
                                 onClick={
                                     () => openColorPicker('left')
-                            }>
+                                }>
                                 <span>Left</span>
                             </div>
                         </div>
                         <div className={
-                                `color-modal ${
-                                    colorPickerVisible && 'open'
-                                }`
-                            }
+                            `color-modal ${colorPickerVisible && 'open'
+                            }`
+                        }
                             ref={colorPickerRef}>
                             <HexColorPicker color={color}
                                 onChange={
                                     (e) => changeSideColor(e)
-                                }/>
+                                } />
                         </div>
                     </div>
                 </div>
@@ -495,7 +508,7 @@ const App = () => {
                 <button type="submit" className="save-btn"
                     disabled={
                         disabledForm()
-                }>Add Block</button>
+                    }>Add Block</button>
 
             </form>
 

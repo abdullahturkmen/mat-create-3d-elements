@@ -33,6 +33,8 @@ const App = () => {
     const rotateYAxisSizeRef = useRef(null);
     const rotateZAxisSizeRef = useRef(null);
 
+    const formRef = useRef(null);
+
     const [newElement, setNewElement] = useState([]);
 
     const [color, setColor] = useState("");
@@ -109,9 +111,9 @@ const App = () => {
                 xWidth: parseInt(xAxisSizeRef.current.value),
                 yWidth: parseInt(yAxisSizeRef.current.value),
                 zWidth: parseInt(zAxisSizeRef.current.value),
-                top: `calc(50% - ${parseInt(topSizeRef.current.value)
+                top: `calc(50% + ${parseInt(topSizeRef.current.value)
                     }px)`,
-                left: `calc(50% - ${parseInt(leftSizeRef.current.value)
+                left: `calc(50% + ${parseInt(leftSizeRef.current.value)
                     }px)`,
                 bottomSpace: parseInt(bottomSizeRef.current.value),
                 rotateX: parseInt(rotateXAxisSizeRef.current.value),
@@ -203,6 +205,18 @@ const App = () => {
         };
     }, [colorPickerRef]);
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (formRef.current && !formRef.current.contains(event.target)) {
+                setFormVisible(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [formRef]);
+
     const disabledForm = () => {
         if (xAxisSize <= 0 || yAxisSize <= 0 || zAxisSize <= 0) {
             return true
@@ -218,10 +232,16 @@ const App = () => {
         setFloorZoom(floorZoom - 1 / 20)
     }
 
+    const shareProject = () => {
+        console.log("al git",elements)
+    }
+
     return (
         <div className="App">
 
             <Author />
+
+            <div className='export-btn' onClick={shareProject}>Share</div>
 
 
             <div className='camera-positions'>
@@ -291,7 +311,7 @@ const App = () => {
             }
 
 
-            <form onSubmit={addElement}
+            <form ref={formRef} onSubmit={addElement}
                 className={
                     `form ${formVisible && 'open'
                     }`
